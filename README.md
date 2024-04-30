@@ -1,7 +1,7 @@
 
 # Renkli Kutular
 
-Bu oyun, renkli kutular adını taşıyor ve oyunculara renkler ve şekiller ile eğlenceli bir deneyim sunmayı amaçlıyor.
+Bu oyun, renkli kutular adını taşıyor, oyunculara renkler ve şekiller ile eğlenceli bir deneyim sunmayı amaçlıyor.
 
 ## Nasıl Oynanır
 - Oyun her 10 saniyede bir renk seçer. Ekranın üst kısmında belirtilen renk, doğru kareyi tıklamak için hedef olur.

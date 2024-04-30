@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renkli Kare Oyunu</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+            overflow: hidden;
+        }
+        canvas {
+            display:block;
+            background-color:#f0f0f0;
+            margin:auto;
+        }
+        #player_renk {
+            padding-top:1rem;
+            position:absolute;
+            font-size: 2rem;
+            height:100px;
+            width:100%;
+            text-align:center;
+        }
+        #scorealan{
+            display:flex;
+            justify-content:space-around;
+            width:100%;
+            height:100px;
+            align-items: center;
+            font-size:1.5rem;
+           
+        }
+        #scorealan div{
+            text-align: center;
+        }
+        #red{
+            color:red;
+        }
+        #blue{
+            color:blue;
+        }
+        #green{
+            color:green;
+        }
+        #yellow{
+            color:yellow;
+        }
+        #purple{
+            color:purple;
+        }
+       
+    </style>
+</head>
+<body>
+    <!--- div kullanılarak secilen renk, oyun ve skor tablosu icin alan ayirma--->
+    <div>
+        <div id="player_renk"></div>
+        <canvas id="canvas_Area"></canvas>
+        <div id="scorealan">
+            <div id="red">Red:</div>
+            <div id="blue">Blue:</div>
+            <div id="green">Green:</div>
+            <div id="yellow">Yellow:</div>
+            <div id="purple">Purple:</div>
+            <div id="black">Black:</div>
+        </div>
+    </div>
+    
+    
+
+    <script>
+        var canvas = document.getElementById("canvas_Area");//oyun alani olusturma
+        var ctx = canvas.getContext("2d");
+        //oyun alanimin oyuncunun kullandiği cihaz ile ayni boy ve genislikte olmasini istiyorum fakat skor alani icin 100px yükseklik belirledim.Bu yuzden 100px degerini cikararak skor tablosunun gozukmesini sagliyorum.
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight-100;
+        var secenekler = ["Red", "Blue", "Green", "Yellow", "Purple", "Black"];
+        //1-6 arasinda rastgele sayi uretilerek oyuncunun tiklayacagi rengi belirleme
+        var secilen_renk;
+        function renk_sec() {
+            secilen_renk=secenekler[Math.floor(Math.random()*6)];
+            document.getElementById("player_renk").innerText="Seçilen Renk: "+secilen_renk;
+        }
+        renk_sec();
+        setInterval(renk_sec, 5000);
+        var kare_width =60;
+        var kare_height =60;
+        function kare_Olustur(x,y,width,height,color) {
+            ctx.fillStyle=color;
+            ctx.fillRect(x,y,width,height);
+            return { x:x,y:y,width:width,height:height,color:color };
+        }
+        function animasyon(olusturulan_sekil) {
+            setInterval(function () {
+                ctx.clearRect(olusturulan_sekil.x-1,olusturulan_sekil.y-1,olusturulan_sekil.width+2,olusturulan_sekil.height+2);
+                olusturulan_sekil.y+=5;
+                kare_Olustur(olusturulan_sekil.x,olusturulan_sekil.y,olusturulan_sekil.width,olusturulan_sekil.height,olusturulan_sekil.color);
+            },50);
+        }
+        var kirmizikareler = [];
+        var mavikareler = [];
+        var yesilkareler = [];
+        var sarikareler = [];
+        var morkareler = [];
+        var siyahkareler = [];
+        function rastgele_Sekil_Olustur() {
+            var randomNum = Math.floor(Math.random()*6)+1;//uretilen karelerin rengini belirleme icin rastgele sayi uretme (1-6 arasinda)
+            var x = Math.random()*(canvas.width-60);//karenin x noktasinin canvas sinirlari icinde olmasi gerekir (60 karenin genisligi)
+            var y = 0;//uretilen karenin en ust konumdan baslamasi
+            var olusturulan_sekil;
+            if(randomNum==1){
+                olusturulan_sekil=kare_Olustur(x,y,kare_width,kare_height,"Red");
+                kirmizikareler.push(olusturulan_sekil);
+            }
+            else if(randomNum==2){
+                olusturulan_sekil=kare_Olustur(x,y,kare_width,kare_height,"Blue");
+                mavikareler.push(olusturulan_sekil);
+            }
+            else if(randomNum==3){
+                olusturulan_sekil=kare_Olustur(x,y,kare_width,kare_height,"Green");
+                yesilkareler.push(olusturulan_sekil);
+            }
+            else if(randomNum==4){
+                olusturulan_sekil=kare_Olustur(x,y,kare_width,kare_height,"Yellow");
+                sarikareler.push(olusturulan_sekil);
+            }
+            else if(randomNum==5){
+                olusturulan_sekil=kare_Olustur(x,y,kare_width,kare_height,"Purple");
+                morkareler.push(olusturulan_sekil);
+            }
+            else if(randomNum==6){
+                olusturulan_sekil=kare_Olustur(x,y,kare_width,kare_height,"Black");
+                siyahkareler.push(olusturulan_sekil);
+            }
+            animasyon(olusturulan_sekil);
+        }
+        setInterval(rastgele_Sekil_Olustur, 1000); //her saniyede bir kare uretir
+        //Ekranda skor degerlerini gostermek icin degisken tanimlama
+        var red_score=0;
+        var blue_score=0;
+        var green_score=0;
+        var yellow_score=0;
+        var purple_score=0;
+        var black_score=0;
+        canvas.addEventListener('click', function (event) {
+            var click_x = event.clientX; // Canvas içindeki x koordinatı
+            var click_y = event.clientY; // Canvas içindeki y koordinatı
+            var uyarildi = false; //baslangicta false degeri 
+            var kontrol;
+            //secilen renge gore click kontrolu (6 renk için 6 tane if yapisi)
+            if(secilen_renk=="Red"){
+                for(var i=0;i<kirmizikareler.length;i++){
+                    if(click_x>=kirmizikareler[i].x && click_x<=kirmizikareler[i].x+kare_width && click_y>=kirmizikareler[i].y && click_y<=kirmizikareler[i].y+kare_height){
+                       red_score++; //red score degerini 1 arttır
+                       document.getElementById("red").innerText ="Red: "+red_score; //degeri red alanina yaz
+                       uyarildi=true;
+                       break;
+                    }
+                }
+            }
+            else if(secilen_renk=="Blue"){
+                for(var i=0;i<mavikareler.length;i++){
+                    if(click_x>=mavikareler[i].x && click_x<=mavikareler[i].x+kare_width && click_y>=mavikareler[i].y && click_y<=mavikareler[i].y+kare_height){
+                       blue_score++; //blue score degerini 1 arttır
+                       document.getElementById("blue").innerText ="Blue: "+blue_score;//degeri blue alanina yaz
+                       uyarildi=true;
+                       break;
+                    }
+                }
+            }
+            else if(secilen_renk=="Green"){
+                for(var i=0;i<yesilkareler.length;i++){
+                    if(click_x>=yesilkareler[i].x && click_x<=yesilkareler[i].x+kare_width && click_y>=yesilkareler[i].y && click_y<=yesilkareler[i].y+kare_height){
+                       green_score++;//green score degerini 1 arttır
+                       document.getElementById("green").innerText ="Green: "+green_score;//degeri green alanina yaz
+                       uyarildi=true;
+                       break;
+                    }
+                }
+            }
+            else if(secilen_renk=="Yellow"){
+                for(var i=0;i<sarikareler.length;i++){
+                    if(click_x>=sarikareler[i].x && click_x<=sarikareler[i].x+kare_width && click_y>=sarikareler[i].y && click_y<=sarikareler[i].y+kare_height){
+                       yellow_score++;//yellow score degerini 1 arttır
+                       document.getElementById("yellow").innerText ="Yellow: "+yellow_score;//degeri yellow alanina yaz
+                       uyarildi=true;
+                       break;
+                    }
+                }
+            }
+            else if(secilen_renk=="Purple"){
+                for(var i=0;i<morkareler.length;i++){
+                    if(click_x>=morkareler[i].x && click_x<=morkareler[i].x+kare_width && click_y>=morkareler[i].y && click_y<=morkareler[i].y+kare_height){
+                       purple_score++;//purple score degerini 1 arttır
+                       document.getElementById("purple").innerText ="Purple: "+purple_score;//degeri purple alanina yaz
+                       uyarildi=true;
+                       break;
+                    }
+                }
+            }
+            else if(secilen_renk=="Black"){
+                for(var i=0;i<siyahkareler.length;i++){
+                    if(click_x>=siyahkareler[i].x && click_x<=siyahkareler[i].x+kare_width && click_y>=siyahkareler[i].y && click_y<=siyahkareler[i].y+kare_height){
+                       black_score++;//black score degerini 1 arttır
+                       document.getElementById("black").innerText ="Black: "+black_score;//degeri black alanina yaz
+                       uyarildi=true;
+                       break;
+                    }
+                }
+            }
+            if (!uyarildi) { //uyarildi false oldugu zaman ekranda uyari cikar ve oyun bastan baslar
+                window.alert("Yanlış kareye tıkladınız.");
+                //oyuncu yanlis kareye tikladigi zaman oyunu bastan baslatmak icin skorlari sifirlama
+                red_score=0;
+                document.getElementById("red").innerText ="Red: "+red_score;
+                blue_score=0;
+                document.getElementById("blue").innerText ="Blue: "+blue_score;
+                green_score=0;
+                document.getElementById("green").innerText ="Green: "+green_score;
+                yellow_score=0;
+                document.getElementById("yellow").innerText ="Yellow: "+yellow_score;
+                purple_score=0;
+                document.getElementById("purple").innerText ="Purple: "+purple_score;
+                black_score=0;
+                document.getElementById("black").innerText ="Black: "+black_score;
+            }
+        });
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

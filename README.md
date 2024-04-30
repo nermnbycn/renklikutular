@@ -19,5 +19,5 @@ Bu oyun, renkli kutular adını taşıyor ve oyunculara renkler ve şekiller ile
 ## Ekran Görüntüsü
 https://github.com/nermnbycn/renklikutular/issues/1#issue-2271830784
 
-# Oyun Oynanış Videosu
+## Oyun Oynanış Videosu
 https://youtu.be/1kCpR8pLR2c

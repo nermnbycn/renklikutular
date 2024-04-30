@@ -1,5 +1,5 @@
 
-# Renkli Kutular
+## Renkli Kutular
 
 Bu oyun, renkli kutular adını taşıyor ve oyunculara renkler ve şekiller ile eğlenceli bir deneyim sunmayı amaçlıyor.
 

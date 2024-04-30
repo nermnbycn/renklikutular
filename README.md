@@ -9,6 +9,7 @@ Bu oyun, renkli kutular adını taşıyor ve oyunculara renkler ve şekiller ile
 - Kareler ekrana üstten düşer ve doğru renkteki kareleri tıklayarak skor kazanılır.
 
 - Yanlış renkteki bir kareye tıklanırsa, skorlar sıfırlanır ve oyun yeniden başlar.
+  
 
 ## Teknolojiler
 - HTML
@@ -17,3 +18,5 @@ Bu oyun, renkli kutular adını taşıyor ve oyunculara renkler ve şekiller ile
 
 ## Ekran Görüntüsü
 https://github.com/nermnbycn/renklikutular/issues/1#issue-2271830784
+
+## Oyun Oynanış Video: https://youtu.be/1kCpR8pLR2c
